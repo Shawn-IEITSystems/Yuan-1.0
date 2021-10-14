@@ -7,3 +7,6 @@ Recent work like GPT-3 has demonstrated excellent performance of Zero-Shot and F
 
 
 Please find details in the paper of Yuan-1.0.
+https://arxiv.org/abs/2110.04725
+
+
