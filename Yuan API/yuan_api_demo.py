@@ -10,6 +10,7 @@ import hashlib
 import time
 import json
 
+
 def code_md5(str):
     code=str.encode("utf-8")
     m = hashlib.md5()
@@ -39,18 +40,23 @@ if __name__ == '__main__':
     headers = {'token': token}
 
     # 2、发起推理请求
-    ques="园中草木春无数；下联：湖上山林画不如。上联上海自来水来自海上，下联：" # 采用one-shot推理，需要给出一个样例
+    ques="上联：园中草木春无数；下联：湖上山林画不如。上联：好事流传千古；下联："
+    # ques= "春风用意匀颜色，销得携觞与赋诗。秾丽最宜新著雨，娇饶全在欲开时。以清风为题作一首诗："
     temperature=0.9  # 采样temperature，用于模型生成多样性，默认值0.9
     topP=0.1  # Top P 采样，默认值0.1
     topK=1  # Top K 采样，默认值1
-    tokensToGenerate=10 # 生成tokens，建议与输入的token的个数之和小于2048
-
+    tokensToGenerate=20 # 生成tokens数目，建议与输入的token的个数之和小于2048
     url="http://api-air.inspur.com/v1/interface/api/requestId?"
     url=url+"account={0}&data={1}&temperature={2}&topP={3}&topK={4}&tokensToGenerate={5}&type={6}".format(account,ques,temperature,topP,topK,tokensToGenerate,"api")
     print(url)
     response=rest_get(url,headers,30)
-    requestId=json.loads(response.text)["resData"]
-    print(response.text)
+    response_text = json.loads(response.text)
+    if response_text["flag"]:
+        requestId = response_text["resData"]
+    else:
+        print(response_text)
+        exit()
+    print(response_text)
 
     # 3、查询推理结果
     url = "http://api-air.inspur.com/v1/interface/api/result?"
@@ -62,6 +68,8 @@ if __name__ == '__main__':
         response_text = json.loads(response.text)
         if response_text["resData"] != None:
             break
+        if response_text["flag"] == False:
+            print(response_text)
+            exit()
     print(response_text)
-
     pass
