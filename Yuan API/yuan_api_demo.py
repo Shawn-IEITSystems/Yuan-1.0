@@ -46,7 +46,7 @@ if __name__ == '__main__':
     topP=0.1  # Top P 采样，默认值0.1
     topK=1  # Top K 采样，默认值1
     tokensToGenerate=20 # 生成tokens数目，建议与输入的token的个数之和小于2048
-    url="http://api-air.inspur.com/v1/interface/api/requestId?"
+    url="http://api-air.inspur.com:32102/v1/interface/api/requestId?"
     url=url+"account={0}&data={1}&temperature={2}&topP={3}&topK={4}&tokensToGenerate={5}&type={6}".format(account,ques,temperature,topP,topK,tokensToGenerate,"api")
     print(url)
     response=rest_get(url,headers,30)
@@ -59,7 +59,7 @@ if __name__ == '__main__':
     print(response_text)
 
     # 3、查询推理结果
-    url = "http://api-air.inspur.com/v1/interface/api/result?"
+    url = "http://api-air.inspur.com:32102/v1/interface/api/result?"
     url = url + "account={0}&requestId={1}".format(account, requestId)
     print(url)
     # 调用get请求
