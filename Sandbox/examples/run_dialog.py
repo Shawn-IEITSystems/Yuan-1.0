@@ -7,8 +7,7 @@ from api import demo_web_app
 from api.inspurai import Yuan, set_yuan_account, Example
 
 # 1. set account
-# set_yuan_account("account", "phone Num.")  # 输入您申请的账号和手机号
-set_yuan_account("kkk", "13377778888")  # 输入您申请的账号和手机号
+set_yuan_account("account", "phone Num.")  # 输入您申请的账号和手机号
 
 # 2. initiate yuan api
 # 注意：engine必需是['base_10B','translate','dialog']之一，'base_10B'是基础模型，'translate'是翻译模型，'dialog'是对话模型
