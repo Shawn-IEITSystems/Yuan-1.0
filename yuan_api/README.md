@@ -315,7 +315,7 @@ as_dict()
 
 目前底层API开放两个基础URI：
 ```
-SUBMIT_URL = "http://api-air.inspur.com:32102/v1/interface/api/requestId?"
+SUBMIT_URL = "http://api-air.inspur.com:32102/v1/interface/api/infer/getRequestId?"
 REPLY_URL = "http://api-air.inspur.com:32102/v1/interface/api/result?"
 ```
 SUBMIT_URL用于提交用户的query到后端，返回查询id。
