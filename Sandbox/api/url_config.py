@@ -7,11 +7,9 @@ import os
 ACCOUNT = ''
 PHONE = ''
 
-# SUBMIT_URL = "http://api-air.inspur.com:32102/v1/interface/api/requestId?"
-# REPLY_URL = "http://api-air.inspur.com:32102/v1/interface/api/result?"
+SUBMIT_URL = "http://api-air.inspur.com:32102/v1/interface/api/infer/getRequestId?"
+REPLY_URL = "http://api-air.inspur.com:32102/v1/interface/api/result?"
 
-SUBMIT_URL = "http://172.31.4.109:32102/v1/interface/api/infer/getRequestId?"
-REPLY_URL = "http://172.31.4.109:32102/v1/interface/api/result?"
 
 def code_md5(str):
     code=str.encode("utf-8")
