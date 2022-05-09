@@ -12,7 +12,7 @@ https://arxiv.org/abs/2110.04725
 ## 1. Open source of Yuan-1.0
 
 We will open the corpus (1TB) and API of the Yuan model, as well as the codes for fine-tune, few-shot and zero-shot learning. 
-Please visit [official website](http://air.inspur.com) (http://air.inspur.com) for details to get access of the corpus and APIs of Yuan model.
+Please visit [official website](http://air.inspur.com) (https://air.inspur.com/home) for details to get access of the corpus and APIs of Yuan model.
 
 ## 2. Requirements
 The inference code is provided on python3. Before start using Yuan API to build your application, several python libs are required. You can simply install them via pip tools.
