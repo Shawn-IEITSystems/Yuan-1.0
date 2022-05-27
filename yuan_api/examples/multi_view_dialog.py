@@ -55,21 +55,8 @@ while 1:
     if len(h_dialog)<10:    # 设置保存最多不超过10轮最近的历史对话
         h_dialog.append(Example(inp=prompt,out=response))
     else:
-        h_dialog[-1] = Example(inp=prompt,out=response)
+        del(h_dialog[0])
+        h_dialog.append(Example(inp=prompt,out=response))
     for ex_id in ex_ids:
         yuan.delete_example(ex_id)
     print(response)
-
-
-
-# while(1):
-#     print("输入Q退出")
-#     prompt = input("问：")
-#     if prompt.lower() == "q":
-#         break
-#     response = yuan.submit_API(prompt=prompt,trun="”")
-#     print(response+"”")
-# 4. get response
-# prompt = "故宫的珍宝馆里有什么好玩的？"
-# response = yuan.submit_API(prompt=prompt,trun="”")
-# print(response+"”")
