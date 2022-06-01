@@ -12,11 +12,12 @@ set_yuan_account("account", "phone Num.")  # 输入您申请的账号和手机�
 # 2. initiate yuan api
 # 注意：engine必需是['base_10B','translate','dialog']之一，'base_10B'是基础模型，'translate'是翻译模型，'dialog'是对话模型
 yuan = Yuan(engine='dialog',
-            input_prefix="对话：“",
+            input_prefix="问：“",
             input_suffix="”",
             output_prefix="答：“",
             output_suffix="”",
-            append_output_prefix_to_query=False)
+            append_output_prefix_to_query=True,
+            frequencyPenalty=1.2)
 
 # 3. add examples if in need.
 yuan.add_example(Example(inp="对百雅轩798艺术中心有了解吗？",
