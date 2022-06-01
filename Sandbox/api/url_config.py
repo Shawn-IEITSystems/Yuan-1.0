@@ -37,12 +37,15 @@ def header_generation():
     headers = {'token': token}
     return headers
 
-def submit_request(query,temperature,topP,topK,max_tokens,engine):
+def submit_request(query,temperature,topP,topK,max_tokens,engine, frequencyPenalty,responsePenalty,noRepeatNgramSize):
     """Submit query to the backend server and get requestID."""
     headers=header_generation()
     # url=SUBMIT_URL + "account={0}&data={1}&temperature={2}&topP={3}&topK={4}&tokensToGenerate={5}&type={6}".format(ACCOUNT,query,temperature,topP,topK,max_tokens,"api")
+    # url=SUBMIT_URL + "engine={0}&account={1}&data={2}&temperature={3}&topP={4}&topK={5}&tokensToGenerate={6}" \
+    #                  "&type={7}".format(engine,ACCOUNT,query,temperature,topP,topK, max_tokens,"api")
     url=SUBMIT_URL + "engine={0}&account={1}&data={2}&temperature={3}&topP={4}&topK={5}&tokensToGenerate={6}" \
-                     "&type={7}".format(engine,ACCOUNT,query,temperature,topP,topK, max_tokens,"api")
+                     "&type={7}&frequencyPenalty={8}&responsePenalty={9}&noRepeatNgramSize={10}".\
+        format(engine,ACCOUNT,query,temperature,topP,topK, max_tokens,"api", frequencyPenalty,responsePenalty,noRepeatNgramSize)
     response=rest_get(url,headers,30,show_error=True)
     response_text = json.loads(response.text)
     if  response_text["flag"]:

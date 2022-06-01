@@ -101,10 +101,10 @@ def demo_web_app(gpt, config=UIConfig()):
         # pylint: disable=unused-variable
         prompt = request.json["prompt"]
         # response = gpt.submit_request(prompt)
-        response = gpt.submit_API(prompt=prompt)
+        response = gpt.submit_API(prompt=prompt, trun=gpt.output_suffix)
         offset = 0
-        if not gpt.append_output_prefix_to_query:
-            offset = len(gpt.output_prefix)
+        # if not gpt.append_output_prefix_to_query:
+        #     offset = len(gpt.output_prefix)
         # return {'text': response['choices'][0]['text'][offset:]}
         return {'text': response[offset:]}
 

@@ -1,10 +1,10 @@
 # “源1.0”API调用使用手册
 
-尊敬的用户：
+尊敬的用户：<br />
 衷心感谢您选用了浪潮人工智能巨量模型“源1.0”API！
 本手册介绍了“源1.0”已开放API的接口说明和使用示例，可使使用者更好地了解本API支持的功能及快速使用方法，充分的发挥开放API的作用。
 浪潮（北京）电子信息产业有限公司拥有本手册的版权。
-本手册中的内容如有变动恕不另行通知。 
+本手册中的内容如有变动恕不另行通知。
 如果您对本手册有疑问或建议，请向浪潮（北京）电子信息产业有限公司垂询。
 
 浪潮（北京）电子信息产业有限公司
@@ -126,9 +126,13 @@ yuan = Yuan(engine='base_10B',
             output_suffix='\n\n',
             append_output_prefix_to_query=False,
             topK=1,
-            topP=0.9)
+            topP=0.9,
+            frequencyPenalty=1.0,
+            responsePenalty=1.0,
+            noRepeatNgramSize=0)
 ```
 为方便用户设置，所有参数均给定了默认值。
+
 |参数名|含义|取值范围|
 |:---:|:---|:----:|
 |engine|大模型后台推理引擎，目前可选的推理引擎有基础模型，对话模型和翻译模型|'base_10B'：基础模型<br />translate'：翻译模型<br />'dialog'：对话模型|
@@ -141,7 +145,9 @@ yuan = Yuan(engine='base_10B',
 |append_output_prefix_to_query|如设置，将自动将设定的输出前缀添加到query序列的末尾|bool型|
 |topK|挑选概率最高的 k 个 token作为候选集。<br />若k值为1，则答案唯一。<br />当topK为0时，该参数不起作用。|int：[0,-]|
 |topP|token 的概率累加，从最大概率的 token 往下开始取，当取到累加值大于等于topP时停止。<br />当topP为0时，该参数不起作用。|float：[0,1]|
-
+|frequencyPenalty|重复惩罚参数，基于词出现的次数进行惩罚，出现的次数越多，该词在后文出现的概率越低，同时增强后文的创造性。<br />当frequencyPenalty小于等于1时，该参数不起作用。<br />值越大，惩罚度越高，后文重复度越低。一般设置为1.2。|float:[1,-]|
+|responsePenalty|重复惩罚参数，对出现过的词进行惩罚，降低其在后文出现的概率，同时增强后文的创造性。<br />当frequencyPenalty大于1或responsePenalty小于等于1时，则该参数不起作用。<br />值越大，惩罚度越高，后文重复度越低。|float:[1,-]|
+|noRepeatNgramSize|重复词去除，表示输出中不包含长度为noRepeatNgramSize的重复词。<br />当noRepeatNgramSize小于1时，则该参数不起作用。<br />值越大，不能出现的重复词越长。|int:[0,-]|
 添加样例：
 ```python
 add_example(ex)
@@ -212,11 +218,11 @@ get_max_tokens()
 
 将样例和query拼接成输入序列：
 ```pythonb
-craft_query(prmopt)
+craft_query(prompt)
 ```
 |参数名|含义|取值范围|
 |:---:|:---|:----:|
-|prmopt|除样例外，用户输入的内容|任意字符串|
+|prompt|除样例外，用户输入的内容|任意字符串|
 |return|query序列|任意字符串|
 
 将前后缀添加到Query和样例中：
@@ -229,9 +235,10 @@ format_example(ex)
 
 获取大模型推理API得到的原始结果：
 ```python
-response(query,engine='base_10B',max_tokens=20,temperature=0.9,topP=0.1,topK=1):
+response(query,engine='base_10B',max_tokens=20,temperature=0.9,topP=0.1,topK=1,frequencyPenalty=1.0,responsePenalty=1.0,noRepeatNgramSize=0):
 ```
 函数会异步调用两个API，首先提交query请求到后台，获取请求id，然后按照id轮询“答复”API端口，直到获取到推理生成的结果或超时。
+
 |参数名|含义|取值范围|
 |:---:|:---|:----:|
 |query|包含样例、用户输入、前后缀在内的query字符串。|字符串，长度小于2048|
@@ -240,6 +247,9 @@ response(query,engine='base_10B',max_tokens=20,temperature=0.9,topP=0.1,topK=1):
 |max_tokens|最大生成token长度，数值越大，生成时间越长。不建议超过200。|int:[0~200]|
 |topK|挑选概率最高的 k 个 token作为候选集。<br />若k值为1，则答案唯一。<br />当topK为0时，该参数不起作用。|int:[0,-]|
 |topP|token 的概率累加，从最大概率的 token 往下开始取，当取到累加值大于等于topP时停止。<br />当topP为0时，该参数不起作用。|float:[0,1]|
+|frequencyPenalty|重复惩罚参数，基于词出现的次数进行惩罚，出现的次数越多，该词在后文出现的概率越低，同时增强后文的创造性。<br />当frequencyPenalty小于等于1时，该参数不起作用。<br />值越大，惩罚度越高，后文重复度越低。一般设置为1.2。|float:[1,-]|
+|responsePenalty|重复惩罚参数，对出现过的词进行惩罚，降低其在后文出现的概率，同时增强后文的创造性。<br />当frequencyPenalty大于1或responsePenalty小于等于1时，则该参数不起作用。<br />值越大，惩罚度越高，后文重复度越低。|float:[1,-]|
+|noRepeatNgramSize|重复词去除，表示输出中不包含长度为noRepeatNgramSize的重复词。<br />当noRepeatNgramSize小于1时，则该参数不起作用。<br />值越大，不能出现的重复词越长。|int:[0,-]|
 |return|大模型声称的原始内容|任意字符串|
 
 删除特殊字符：
@@ -254,12 +264,12 @@ del_special_chars(msg)
 
 将prompt提交到API，并返回处理后的生成结果：
 ```python
-submit_API(prmopt, trun='▃')
+submit_API(prompt, trun='▃')
 ```
 提供用户端使用的方法，将用户输入的内容传递到Yuan的API接口，并返回处理后的生成结果。
 |参数名|含义|取值范围|
 |:---:|:---|:----:|
-|prmopt|问题或其他用户输入的内容（不包括样例）|任意中文字符串|
+|prompt|问题或其他用户输入的内容（不包括样例）|任意中文字符串|
 |trun|截断符，设置后结果将在生成内容中第一次出现截断符的地方截断|任意字符|
 
 >><h3 id='Ex-class'>2.3 样例实例</h3>
@@ -337,6 +347,7 @@ token会放置在head中传递给后台API接口。token会从环境变量中读
 submit_request(query,temperature,topP,topK,max_tokens,engine)
 ```
 将最终的query通过`requests.get()`方法提交到uri。
+
 |参数|含义|取值范围|
 |:---:|:---|:----:|
 |query|包含样例、用户输入、前后缀在内的query字符串。|字符串，长度小于2048|
@@ -345,6 +356,9 @@ submit_request(query,temperature,topP,topK,max_tokens,engine)
 |max_tokens|最大生成token长度，数值越大，生成时间越长。不建议超过200。|int:[0~200]|
 |topK|挑选概率最高的 k 个 token作为候选集。<br /> 若k值为1，则答案唯一。<br />当topK为0时，该参数不起作用。|int:[0,-]|
 |topP|token 的概率累加，从最大概率的 token 往下开始取，当取到累加值大于等于topP时停止。<br />当topP为0时，该参数不起作用。|float:[0,1]|
+|frequencyPenalty|重复惩罚参数，基于词出现的次数进行惩罚，出现的次数越多，该词在后文出现的概率越低，同时增强后文的创造性。<br />当frequencyPenalty小于等于1时，该参数不起作用。<br />值越大，惩罚度越高，后文重复度越低。一般设置为1.2。|float:[1,-]|
+|responsePenalty|重复惩罚参数，对出现过的词进行惩罚，降低其在后文出现的概率，同时增强后文的创造性。<br />当frequencyPenalty大于1或responsePenalty小于等于1时，则该参数不起作用。<br />值越大，惩罚度越高，后文重复度越低。|float:[1,-]|
+|noRepeatNgramSize|重复词去除，表示输出中不包含长度为noRepeatNgramSize的重复词。<br />当noRepeatNgramSize小于1时，则该参数不起作用。<br />值越大，不能出现的重复词越长。|int:[0,-]|
 |return：requestId|请求id，用于异步查询生成结果||
 
 获取生成结果：
@@ -352,6 +366,7 @@ submit_request(query,temperature,topP,topK,max_tokens,engine)
 reply_request(requestId,cycle_count=5)
 ```
 根据requestId查询“结果返回”API接口是否有结果生成。
+
 |参数|含义|取值范围|
 |:---:|:---:|:----:|
 |requestId|submit_request生成的请求id|字符串|
@@ -369,4 +384,4 @@ reply_request(requestId,cycle_count=5)
 |3|关键词抽取|base_10B|为以下正文提取关键词。正文：`用户输入`；关键词：|为以下正文提取关键词。正文：|；|关键词：|。|帮我写一首诗，描写春天到了，百花盛开。| 支持|
 |4|中英互译|translate|将下列英文/中文翻译成中文/英文。英文/中文：`用户输入`中文/英文：“|将下列英文/中文翻译成中文/英文。英文/中文：|无|中文/英文：“|”|自然派的哲学家也被称为“苏格拉底之前的哲学家” 。|不建议|
 
-更多应用尽请期待。
+更多应用敬请期待。

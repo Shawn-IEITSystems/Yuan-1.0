@@ -51,7 +51,10 @@ class Yuan:
                 output_suffix='\n\n',
                 append_output_prefix_to_query=False,
                 topK=1,
-                topP=0.9):
+                topP=0.9,
+                frequencyPenalty=1.0,
+                responsePenalty=1.0,
+                noRepeatNgramSize=0):
         
         self.examples = {}
         self.engine = engine
@@ -59,6 +62,9 @@ class Yuan:
         self.max_tokens = max_tokens
         self.topK = topK
         self.topP = topP
+        self.frequencyPenalty = frequencyPenalty
+        self.responsePenalty = responsePenalty
+        self.noRepeatNgramSize = noRepeatNgramSize
         self.input_prefix = input_prefix
         self.input_suffix = input_suffix
         self.output_prefix = output_prefix
@@ -66,8 +72,8 @@ class Yuan:
         self.append_output_prefix_to_query = append_output_prefix_to_query
         self.stop = (output_suffix + input_prefix).strip()
 
-        if self.engine not in ['base_10B','translate','dialog']:
-            raise Exception('engine must be one of [\'base_10B\',\'translate\',\'dialog\'] ')
+        # if self.engine not in ['base_10B','translate','dialog']:
+        #     raise Exception('engine must be one of [\'base_10B\',\'translate\',\'dialog\'] ')
 
     def add_example(self, ex):
         """Add an example to the object.
@@ -126,11 +132,16 @@ class Yuan:
                 max_tokens=20,
                 temperature=0.9,
                 topP=0.1,
-                topK=1):
+                topK=1,
+                frequencyPenalty=1.0,
+                responsePenalty=1.0,
+                noRepeatNgramSize=0):
         """Obtains the original result returned by the API."""
 
         try:
-            requestId = submit_request(query,temperature,topP,topK,max_tokens, engine)
+            # requestId = submit_request(query,temperature,topP,topK,max_tokens, engine)
+            requestId = submit_request(query, temperature, topP, topK, max_tokens, engine, frequencyPenalty,
+                                       responsePenalty, noRepeatNgramSize)
             response_text = reply_request(requestId)
         except Exception as e:
             raise e
@@ -154,7 +165,10 @@ class Yuan:
                             max_tokens=self.max_tokens,
                             temperature=self.temperature,
                             topP=self.topP,
-                            topK=self.topK)
+                            topK=self.topK,
+                            frequencyPenalty = self.frequencyPenalty,
+                            responsePenalty = self.responsePenalty,
+                            noRepeatNgramSize = self.noRepeatNgramSize)
         txt = res['resData']
         # 单独针对翻译模型的后处理
         if self.engine == 'translate':
