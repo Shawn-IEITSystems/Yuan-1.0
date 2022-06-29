@@ -58,6 +58,7 @@ def reply_request(requestId,cycle_count=5):
     """Check reply API to get the inference response."""
     url = REPLY_URL + "account={0}&requestId={1}".format(ACCOUNT, requestId)
     headers=header_generation()
+    response_text= {"flag":True, "resData":None}
     for i in range(cycle_count):
         response = rest_get(url, headers, 30, show_error=True)
         response_text = json.loads(response.text)
@@ -66,4 +67,4 @@ def reply_request(requestId,cycle_count=5):
         if response_text["flag"] == False and i ==cycle_count-1:
             raise  RuntimeWarning(response_text)
         time.sleep(3)
-
+    return response_text
