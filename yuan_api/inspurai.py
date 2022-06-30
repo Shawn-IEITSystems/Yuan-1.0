@@ -169,7 +169,10 @@ class Yuan:
                             frequencyPenalty = self.frequencyPenalty,
                             responsePenalty = self.responsePenalty,
                             noRepeatNgramSize = self.noRepeatNgramSize)
-        txt = res['resData']
+        if 'resData' in res and res['resData'] != None:
+            txt = res['resData']
+        else:
+            txt = '模型返回为空，请尝试修改输入'
         # 单独针对翻译模型的后处理
         if self.engine == 'translate':
             txt = txt.replace(' ##', '').replace(' "', '"').replace(": ", ":").replace(" ,", ",") \
