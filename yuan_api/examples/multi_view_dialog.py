@@ -1,11 +1,12 @@
 import os
 import sys
 sys.path.append(os.path.abspath(os.curdir))
-
+from simhash import Simhash
 from yuan_api.inspurai import Yuan, set_yuan_account,Example
+import heapq
 
 # 1. set account
-set_yuan_account("账号", "手机号")  # 输入您申请的账号和手机号
+# set_yuan_account("账号", "手机号")  # 输入您申请的账号和手机号
 
 # 2. initiate yuan api
 # 注意：engine必需是['base_10B','translate','dialog']之一，'base_10B'是基础模型，'translate'是翻译模型，'dialog'是对话模型
@@ -26,14 +27,46 @@ print("====多轮对话机器人====")
 
 h_dialog = []   # 存放历史对话：元素为ex
 
-def get_relative_qa(prompt, h_dialog):
+def get_relative_qa(prompt, h_dialog, topN=2):
     """
-    可以添加相关性计算，这里简单使用最近的一次对话
+    可以添加相关性计算，这里简单使用最近的一次对话。
+    :topN: 需要返回的相关对话轮数。
     """
+    def simhash(query, text,):
+        """
+        采用局部敏感的hash值表示语义。
+        """
+        q_simhash = Simhash(query)
+        t_simhash = Simhash(text)
+        max_hashbit = max(len(bin(q_simhash.value)), len(bin(t_simhash.value)))
+
+        distance = q_simhash.distance(t_simhash)
+        # print(distance)
+
+        similar = 1 - distance / max_hashbit
+        return similar
+    
+    h_num = len(h_dialog)
+    sim_values = []
+    tm_effs= []
+    rel_effs = []
+    gamma = 0.8 # time effect coefficient
+
     if not h_dialog:
         return []
     else:
-        return [h_dialog[-1]]
+        for indx, dialog in enumerate(h_dialog):
+            text = '|'.join((dialog.input, dialog.output))
+            sim_value = simhash(prompt, text)
+            tm_eff = gamma ** ((h_num - indx)/h_num)
+            rel_eff = sim_value * tm_eff
+            sim_values.append(sim_value)
+            tm_effs.append(tm_eff)
+            rel_effs.append(rel_eff)
+        
+        top_idx = heapq.nlargest(topN, range(len(rel_effs)), rel_effs.__getitem__)
+        mst_dialog = [h_dialog[idx] for idx in top_idx]
+        return mst_dialog.reverse()
 
 def update_example(yuan,exs):
     ex_ids = []

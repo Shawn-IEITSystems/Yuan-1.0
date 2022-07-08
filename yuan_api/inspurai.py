@@ -52,9 +52,9 @@ class Yuan:
                 append_output_prefix_to_query=False,
                 topK=1,
                 topP=0.9,
-                frequencyPenalty=1.0,
-                responsePenalty=1.0,
-                noRepeatNgramSize=0):
+                frequencyPenalty=1.2,
+                responsePenalty=1.2,
+                noRepeatNgramSize=2):
         
         self.examples = {}
         self.engine = engine
