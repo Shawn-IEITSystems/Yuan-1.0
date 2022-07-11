@@ -25,3 +25,16 @@ After submit application on official website, it will take several days (normall
 Please keep your registered account and phone number properly, which will be used to generate an unique key to get access the API.
 
 For more details, please check the example code, `yuan_api/examples`, and follow the API document.
+
+## 4. Applications
+Here we summarize some simple application example configuration methods for users' reference. The parameters not mentioned therein have adopted default values.
+
+|ID|app|model|prompt template|input prefix|input suffix|output prefix|truncation character|example|few-shot|
+|--:|:---:|:--:|:--------|:----|:--------|:--------|:--------|:--------|:---:|
+|0|dialog generation|dialog|问：“`用户输入`”答：“|问：“|”|答：“|”|故宫有什么好玩的？|support|
+|1|content continuation|base_10B|`用户输入`|无|无|无|默认|徐凤年刚走入京大校门，已经有学生会迎新的同学走到了他面前，|not recommended|
+|2|poetry maker|base_10B|以“`用户输入`”为题作一首诗：“|以“|”为题作一首诗：“|无|”|清风| recommended|
+|3|关键词抽取|base_10B|为以下正文提取关键词。正文：`用户输入`；关键词：|为以下正文提取关键词。正文：|；|关键词：|。|帮我写一首诗，描写春天到了，百花盛开。| support|
+|4|ch-en translation|translate|将下列英文/中文翻译成中文/英文。英文/中文：`用户输入`中文/英文：“|将下列英文/中文翻译成中文/英文。英文/中文：|无|中文/英文：“|”|自然派的哲学家也被称为“苏格拉底之前的哲学家” 。|not recommended|
+
+Please look forward to more applications.
