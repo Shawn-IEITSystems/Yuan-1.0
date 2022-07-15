@@ -66,7 +66,8 @@ def get_relative_qa(prompt, h_dialog, topN=2):
         
         top_idx = heapq.nlargest(topN, range(len(rel_effs)), rel_effs.__getitem__)
         mst_dialog = [h_dialog[idx] for idx in top_idx]
-        return mst_dialog.reverse()
+        mst_dialog.reverse()
+        return mst_dialog
 
 def update_example(yuan,exs):
     ex_ids = []
