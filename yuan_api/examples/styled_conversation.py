@@ -14,20 +14,23 @@ yuan = Yuan(engine='base_10B',
             input_suffix="",
             output_prefix="",
             output_suffix="",
-            append_output_prefix_to_query=False,
             topK=5,
-            temperature=1,
-            topP=0.8,
+            temperature=0.9,
+            topP=0.9,
+            max_tokens=200,
+            append_output_prefix_to_query=False,
             frequencyPenalty=1.2)
 
 # 3. add examples if in need.
+yuan.add_example(Example(inp="提起她，脑海中不禁浮现两个字：霸气。因此，在背后我常常称呼哪位颇具霸气风范的女孩为“御姐”。她个子不高，性子冷。鼻梁上架着一副棕色眼镜。嗓门不大，却能镇住全场。我跟她说“发生了什么？”她冷漠得说：",
+                        out="没什么，你别管了。"))
 
-print("====文章续写====")
+print("====风格对话====")
 
 while(1):
     print("输入Q退出")
-    prompt = input("输入：")
+    prompt = input("我：")
     if prompt.lower() == "q":
         break
-    response = yuan.submit_API(prompt=prompt)
-    print(response+"")
+    response = yuan.submit_API(prompt=prompt,trun="”")
+    print(response+"”")

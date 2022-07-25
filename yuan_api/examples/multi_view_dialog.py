@@ -18,10 +18,6 @@ yuan = Yuan(engine='dialog',
             append_output_prefix_to_query=True)
 
 # 3. add examples if in need.
-yuan.add_example(Example(inp="对百雅轩798艺术中心有了解吗？",
-                        out="有些了解，它位于北京798艺术区，创办于2003年。"))
-yuan.add_example(Example(inp="不过去这里我不知道需不需要门票？",out="我知道，不需要，是免费开放。"))
-yuan.add_example(Example(inp="你还可以到它边上的观复博物馆看看，我觉得那里很不错。",out="观复博物馆我知道，是马未都先生创办的新中国第一家私立博物馆。"))
 
 print("====多轮对话机器人====")
 
@@ -85,7 +81,7 @@ while 1:
         prompt = prompt[:-1]
     exs = get_relative_qa(prompt, h_dialog)
     yuan, ex_ids = update_example(yuan, exs)
-    response = yuan.submit_API(prompt=prompt,trun="”")
+    response = yuan.submit_API(prompt=prompt,trun="")
     if len(h_dialog)<10:    # 设置保存最多不超过10轮最近的历史对话
         h_dialog.append(Example(inp=prompt,out=response))
     else:

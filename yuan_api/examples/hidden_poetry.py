@@ -16,6 +16,7 @@ yuan = Yuan(engine='base_10B',
             output_suffix="”",
             topK=5,
             topP=0.8,
+            max_tokens=10,
             temperature=1,
             frequencyPenalty=1.2,
             append_output_prefix_to_query=False)
