@@ -9,25 +9,25 @@ from yuan_api.inspurai import Yuan, set_yuan_account,Example
 
 # 2. initiate yuan api
 # 注意：engine必需是['base_10B','translate','dialog']之一，'base_10B'是基础模型，'translate'是翻译模型，'dialog'是对话模型
-yuan = Yuan(engine='base_10B',
-            input_prefix="",
+yuan = Yuan(engine='dialog',
+            input_prefix="问：",
             input_suffix="",
-            output_prefix="",
-            output_suffix="",
-            append_output_prefix_to_query=False,
+            output_prefix="答：",
+            output_suffix="。",
+            temperature=0.1,
+            topP=1,
             topK=5,
-            temperature=1,
-            topP=0.8,
-            frequencyPenalty=1.2)
+            max_tokens=128,
+            append_output_prefix_to_query=True)
 
 # 3. add examples if in need.
 
-print("====文章续写====")
+print("====知识问答====")
 
 while(1):
     print("输入Q退出")
-    prompt = input("输入：")
+    prompt = input("问：")
     if prompt.lower() == "q":
         break
-    response = yuan.submit_API(prompt=prompt)
-    print(response+"")
+    response = yuan.submit_API(prompt=prompt,trun="。")
+    print("答："+response+"。")

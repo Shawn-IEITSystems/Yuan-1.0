@@ -15,19 +15,20 @@ yuan = Yuan(engine='base_10B',
             output_prefix="",
             output_suffix="",
             append_output_prefix_to_query=False,
-            topK=5,
-            temperature=1,
-            topP=0.8,
+            topK=5,   
+            temperature=0.5,
+            topP=1,
+            max_tokens=200,
             frequencyPenalty=1.2)
 
 # 3. add examples if in need.
 
-print("====文章续写====")
+print("====食谱生成====")
 
 while(1):
     print("输入Q退出")
-    prompt = input("输入：")
+    prompt = input("食谱：")
     if prompt.lower() == "q":
         break
     response = yuan.submit_API(prompt=prompt)
-    print(response+"")
+    print(response+"”")
