@@ -15,6 +15,7 @@ yuan = Yuan(engine='dialog',
             input_suffix="”",
             output_prefix="答：“",
             output_suffix="”",
+            max_tokens=30,
             append_output_prefix_to_query=True)
 
 # 3. add examples if in need.

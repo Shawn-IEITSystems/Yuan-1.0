@@ -14,6 +14,7 @@ yuan = Yuan(engine='base_10B',
             input_suffix="为题作一首诗：",
             output_prefix="答：",
             output_suffix="”",
+            max_tokens=40,
             append_output_prefix_to_query=False)
 
 # 3. add examples if in need.
