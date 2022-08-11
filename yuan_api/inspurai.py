@@ -156,7 +156,7 @@ class Yuan:
         return msg
 
 
-    def submit_API(self, prompt, trun='▃'):
+    def submit_API(self, prompt, trun=[]):
         """Submit prompt to yuan API interface and obtain an pure text reply.
         :prompt: Question or any content a user may input.
         :return: pure text response."""
@@ -180,11 +180,19 @@ class Yuan:
         else:
             txt = txt.replace(' ', '')
         txt = self.del_special_chars(txt)
-        if trun:
-            try:
-                txt = txt[:txt.index(trun)]
-            except:
-                return txt
+
+        # trun多结束符截断模型输出
+        if isinstance(trun, str):
+            trun = [trun]
+        try:
+            if trun != None and isinstance(trun, list) and  trun != []:
+                for tr in trun:
+                    if tr in txt and tr!="":
+                        txt = txt[:txt.index(tr)]
+                    else:
+                        continue
+        except:
+            return txt
         return txt
 
 
