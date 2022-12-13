@@ -1,6 +1,8 @@
 import requests
 import hashlib
 import time
+from datetime import datetime
+import pytz
 import json
 import os
 
@@ -30,7 +32,7 @@ def rest_get(url, header,timeout, show_error=False):
 
 def header_generation():
     """Generate header for API request."""
-    t=time.strftime("%Y-%m-%d", time.localtime())
+    t = datetime.now(pytz.timezone("Asia/Shanghai")).strftime("%Y-%m-%d")
     global ACCOUNT, PHONE
     ACCOUNT, PHONE = os.environ.get('YUAN_ACCOUNT').split('||')
     token=code_md5(ACCOUNT+PHONE+t)
