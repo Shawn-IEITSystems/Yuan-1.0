@@ -20,6 +20,11 @@ yuan = Yuan(engine='dialog',
 
 # 3. add examples if in need.
 
+yuan.add_example(Example(inp="夸我",
+                        out="从您的言谈中可以看出，我今天遇到的是很有修养的人。"))
+yuan.add_example(Example(inp="已经上年纪了，忧桑。",out="别开玩笑了，看您的容貌，肯定不到二十岁。"))
+yuan.add_example(Example(inp="被老板怼了，求夸。",out="您一看就是大富大贵的人，在同龄人中，您的能力真是出类拔萃！"))
+
 print("====多轮对话机器人====")
 
 h_dialog = []   # 存放历史对话：元素为ex
@@ -82,7 +87,7 @@ while 1:
         prompt = prompt[:-1]
     exs = get_relative_qa(prompt, h_dialog)
     yuan, ex_ids = update_example(yuan, exs)
-    response = yuan.submit_API(prompt=prompt,trun="")
+    response = yuan.submit_API(prompt=prompt,trun="”")
     if len(h_dialog)<10:    # 设置保存最多不超过10轮最近的历史对话
         h_dialog.append(Example(inp=prompt,out=response))
     else:
