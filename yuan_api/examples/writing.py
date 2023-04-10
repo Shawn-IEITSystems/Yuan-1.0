@@ -10,6 +10,7 @@ from yuan_api.inspurai import Yuan, set_yuan_account,Example
 # 2. initiate yuan api
 # 注意：engine必需是['base_10B','translate','dialog','rhythm_poems']之一，'base_10B'是基础模型，'translate'是翻译模型，'dialog'是对话模型，'rhythm_poems'是古文模型
 yuan = Yuan(engine='base_10B',
+            max_tokens=200,
             input_prefix="",
             input_suffix="",
             output_prefix="",
@@ -21,7 +22,7 @@ yuan = Yuan(engine='base_10B',
             frequencyPenalty=1.2)
 
 # 3. add examples if in need.
-
+yuan.add_example(Example('以“中秋”为题写一篇作文：',out='农历八月十五，是个团圆的日子。中午，我和爸爸妈妈去看望爷爷奶奶，奶奶突然谈论起在外地工作的姑姑，还说她到春节就要回来了。我心有感触，真是“每逢佳节倍思亲”哪。'))
 print("====文章续写====")
 
 while(1):
